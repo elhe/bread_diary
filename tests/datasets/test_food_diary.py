@@ -47,3 +47,15 @@ class FoodDiaryTest(unittest.TestCase):
         food_diary_manager.delete(entry.id)
         actual = list(food_diary_manager.find_all())
         assert not actual
+
+    def test_delete_nonexistent_entry(self):
+        food_diary_manager.delete(-1)
+        actual = list(food_diary_manager.find_all())
+        assert not actual
+
+    def test_save_default_diary(self):
+        entry = FoodDiaryEntry()
+        food_diary_manager.save(entry)
+
+        actual = food_diary_manager.find(entry)
+        compare(actual['name'], entry.name)

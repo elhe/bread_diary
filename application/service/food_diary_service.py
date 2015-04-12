@@ -20,7 +20,8 @@ def entries():
 @application.route(DIARY_ADD_URL, methods=['POST', ])
 def add():
     data = request.get_json()
-    data['date_time'] = datetime.strptime(data['date_time'], '%b %d %Y %I:%M%p')
+    if data.get('date_time'):
+        data['date_time'] = datetime.strptime(data['date_time'], '%b %d %Y %I:%M%p')
     entry = FoodDiaryEntry(**data)
     food_diary_manager.save(entry)
     return jsonify(dict(status='OK', id=entry.id))

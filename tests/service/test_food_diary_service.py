@@ -2,9 +2,7 @@ import json
 import unittest
 
 from dateutil import parser
-
 from application import application
-
 from application.managers import food_diary_manager
 from application.models.food_diary_entry import FoodDiaryEntry
 from application.urls import DIARY_ADD_URL, DIARY_UPDATE_URL, DIARY_DELETE_URL, DIARY_ALL_URL
@@ -33,6 +31,13 @@ class TestFoodDiaryService(unittest.TestCase):
         assert actual
         compare(entry.name, actual['name'])
         compare(entry.note, actual['note'])
+
+    def test_add_empty(self):
+        response = self.app.post(DIARY_ADD_URL, headers={'content-type': 'application/json'},
+                                 data=json.dumps({}))
+        response_json = json.loads(response.data)
+        assert response_json['id']
+        compare('OK', response_json['status'])
 
     def test_edit(self):
         entry = FoodDiaryEntry(name='One', note='note')
@@ -69,7 +74,7 @@ class TestFoodDiaryService(unittest.TestCase):
 
         response = self.app.get(DIARY_ALL_URL)
         response_json = json.loads(response.data)
-        
+
         for entry in response_json['entries']:
             entry['date_time'] = parser.parse(entry['date_time'])
 

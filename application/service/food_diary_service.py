@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from application import application
 from application.managers import food_diary_manager
 from application.models.food_diary_entry import FoodDiaryEntry
@@ -21,7 +19,7 @@ def entries():
 def add():
     data = request.get_json()
     if data.get('date_time'):
-        data['date_time'] = datetime.strptime(data['date_time'], '%b %d %Y %I:%M%p')
+        data['date_time'] = parser.parse(data['date_time'])
     entry = FoodDiaryEntry(**data)
     food_diary_manager.save(entry)
     return jsonify(dict(status='OK', id=entry.id))

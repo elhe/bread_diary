@@ -8,7 +8,7 @@ def json_serial(obj):
     """JSON serializer for objects not serializable by default json code"""
 
     if isinstance(obj, datetime):
-        serial = obj.strftime('%b %d %Y %I:%M%p')
+        serial = obj.strftime('%d %b %Y %H:%M')
         return serial
     return obj
 

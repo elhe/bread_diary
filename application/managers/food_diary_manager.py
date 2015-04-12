@@ -29,7 +29,7 @@ def delete(entry_id):
 
 
 def find_all(limit=10):
-    return dataset.connect()[table_name].find(_limit=limit)
+    return dataset.connect()[table_name].find(_limit=limit, order_by='-id')
 
 
 def truncate():
